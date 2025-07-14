@@ -1,0 +1,244 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SoundTouch.Net.NAudioSupport</name>
+    </assembly>
+    <members>
+        <member name="T:SoundTouch.Net.NAudioSupport.Assets.Strings">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:SoundTouch.Net.NAudioSupport.Assets.Strings.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:SoundTouch.Net.NAudioSupport.Assets.Strings.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:SoundTouch.Net.NAudioSupport.Assets.Strings.Argument_WaveFormat32BitsPerSample">
+            <summary>
+              Looks up a localized string similar to Input wave provider must be 32 bit..
+            </summary>
+        </member>
+        <member name="P:SoundTouch.Net.NAudioSupport.Assets.Strings.Argument_WaveFormatIeeeFloat">
+            <summary>
+              Looks up a localized string similar to Input wave provider must be IEEE float..
+            </summary>
+        </member>
+        <member name="P:SoundTouch.Net.NAudioSupport.Assets.Strings.ObjectDisposed_StreamClosed">
+            <summary>
+              Looks up a localized string similar to Cannot access a closed stream..
+            </summary>
+        </member>
+        <member name="M:SoundTouch.Net.NAudioSupport.DoubleUtil.AreClose(System.Double,System.Double)">
+            <summary>
+            AreClose - Returns whether or not two doubles are "close".  That is, whether or
+            not they are within epsilon of each other.  Note that this epsilon is proportional
+            to the numbers themselves to that AreClose survives scalar multiplication.
+            There are plenty of ways for this to return false even for numbers which
+            are theoretically identical, so no code calling this should fail to work if this
+            returns false.  This is important enough to repeat:
+            NB: NO CODE CALLING THIS FUNCTION SHOULD DEPEND ON ACCURATE RESULTS - this should be
+            used for optimizations *only*.
+            </summary>
+            <returns>
+            bool - the result of the AreClose comparison.
+            </returns>
+            <param name="value1">The first double to compare.</param>
+            <param name="value2">The second double to compare.</param>
+        </member>
+        <member name="T:SoundTouch.Net.NAudioSupport.SoundTouchWaveProvider">
+            <summary>
+            Wave provider for controlling the tempo, pitch and rate.
+            </summary>
+        </member>
+        <member name="M:SoundTouch.Net.NAudioSupport.SoundTouchWaveProvider.#ctor(NAudio.Wave.IWaveProvider,SoundTouch.SoundTouchProcessor)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SoundTouch.Net.NAudioSupport.SoundTouchWaveProvider"/> class.
+            </summary>
+            <param name="sourceProvider">The source provider.</param>
+            <param name="processor">The processor for changing tempo, pitch and rate. When not specified, a new instance of <see cref="T:SoundTouch.SoundTouchProcessor"/> is used.</param>
+        </member>
+        <member name="E:SoundTouch.Net.NAudioSupport.SoundTouchWaveProvider.UnobservedException">
+            <summary>
+            Occurs when an exception is caught during a read operation.
+            </summary>
+        </member>
+        <member name="P:SoundTouch.Net.NAudioSupport.SoundTouchWaveProvider.WaveFormat">
+            <inheritdoc/>
+        </member>
+        <member name="P:SoundTouch.Net.NAudioSupport.SoundTouchWaveProvider.Tempo">
+            <summary>
+            Gets or sets the tempo control value.
+            </summary>
+        </member>
+        <member name="P:SoundTouch.Net.NAudioSupport.SoundTouchWaveProvider.Pitch">
+            <summary>
+            Gets or sets pitch control value. Original pitch = 1.0, smaller values
+            represent lower pitches, larger values higher pitch.
+            </summary>
+        </member>
+        <member name="P:SoundTouch.Net.NAudioSupport.SoundTouchWaveProvider.Rate">
+            <summary>
+            Gets or sets the rate control value.
+            </summary>
+            <value>Normal rate = 1.0, smaller values represent slower rate,
+            larger faster rates.</value>
+        </member>
+        <member name="P:SoundTouch.Net.NAudioSupport.SoundTouchWaveProvider.TempoChange">
+            <summary>
+            Gets or sets new tempo control value as a difference in percents compared
+            to the original tempo (-50 .. +100 %).
+            </summary>
+        </member>
+        <member name="P:SoundTouch.Net.NAudioSupport.SoundTouchWaveProvider.PitchOctaves">
+            <summary>
+            Gets or sets pitch change in octaves compared to the original pitch
+            (-1.00 .. +1.00).
+            </summary>
+        </member>
+        <member name="P:SoundTouch.Net.NAudioSupport.SoundTouchWaveProvider.PitchSemiTones">
+            <summary>
+            Gets or sets pitch change in semi-tones compared to the original pitch
+            (-12 .. +12).
+            </summary>
+        </member>
+        <member name="P:SoundTouch.Net.NAudioSupport.SoundTouchWaveProvider.RateChange">
+            <summary>
+            Gets or sets the rate control value as a difference in percents compared
+            to the original rate (-50 .. +100 %).
+            </summary>
+        </member>
+        <member name="M:SoundTouch.Net.NAudioSupport.SoundTouchWaveProvider.OptimizeForSpeech">
+            <summary>
+            Change the settings of the sound processing to be better suited for natural speech.
+            </summary>
+        </member>
+        <member name="M:SoundTouch.Net.NAudioSupport.SoundTouchWaveProvider.Clear">
+            <summary>
+            Clears all the samples buffered in the internal processing.
+            </summary>
+        </member>
+        <member name="M:SoundTouch.Net.NAudioSupport.SoundTouchWaveProvider.Read(System.Byte[],System.Int32,System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="T:SoundTouch.Net.NAudioSupport.SoundTouchWaveStream">
+            <summary>
+            Wave Stream for applying <see cref="N:SoundTouch"/> effects on the
+            concents of a <see cref="T:NAudio.Wave.WaveStream"/>.
+            </summary>
+        </member>
+        <member name="M:SoundTouch.Net.NAudioSupport.SoundTouchWaveStream.#ctor(NAudio.Wave.WaveStream)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SoundTouch.Net.NAudioSupport.SoundTouchWaveStream"/> class.
+            </summary>
+            <param name="sourceStream">Input stream.</param>
+        </member>
+        <member name="M:SoundTouch.Net.NAudioSupport.SoundTouchWaveStream.#ctor(NAudio.Wave.WaveStream,SoundTouch.SoundTouchProcessor)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SoundTouch.Net.NAudioSupport.SoundTouchWaveStream"/> class.
+            </summary>
+            <param name="sourceStream">Input stream.</param>
+            <param name="processor">The processor for changing tempo, pitch and rate. When not specified, a new instance of <see cref="T:SoundTouch.SoundTouchProcessor"/> is used.</param>
+        </member>
+        <member name="P:SoundTouch.Net.NAudioSupport.SoundTouchWaveStream.WaveFormat">
+            <inheritdoc/>
+        </member>
+        <member name="P:SoundTouch.Net.NAudioSupport.SoundTouchWaveStream.Length">
+            <inheritdoc/>
+        </member>
+        <member name="P:SoundTouch.Net.NAudioSupport.SoundTouchWaveStream.CanRead">
+            <inheritdoc/>
+        </member>
+        <member name="P:SoundTouch.Net.NAudioSupport.SoundTouchWaveStream.CanSeek">
+            <inheritdoc/>
+        </member>
+        <member name="P:SoundTouch.Net.NAudioSupport.SoundTouchWaveStream.Tempo">
+            <summary>
+            Gets or sets the tempo control value.
+            </summary>
+        </member>
+        <member name="P:SoundTouch.Net.NAudioSupport.SoundTouchWaveStream.Pitch">
+            <summary>
+            Gets or sets pitch control value. Original pitch = 1.0, smaller values
+            represent lower pitches, larger values higher pitch.
+            </summary>
+        </member>
+        <member name="P:SoundTouch.Net.NAudioSupport.SoundTouchWaveStream.Rate">
+            <summary>
+            Gets or sets the rate control value.
+            </summary>
+            <value>Normal rate = 1.0, smaller values represent slower rate,
+            larger faster rates.</value>
+        </member>
+        <member name="P:SoundTouch.Net.NAudioSupport.SoundTouchWaveStream.TempoChange">
+            <summary>
+            Gets or sets new tempo control value as a difference in percents compared
+            to the original tempo (-50 .. +100 %).
+            </summary>
+        </member>
+        <member name="P:SoundTouch.Net.NAudioSupport.SoundTouchWaveStream.PitchOctaves">
+            <summary>
+            Gets or sets pitch change in octaves compared to the original pitch
+            (-1.00 .. +1.00).
+            </summary>
+        </member>
+        <member name="P:SoundTouch.Net.NAudioSupport.SoundTouchWaveStream.PitchSemiTones">
+            <summary>
+            Gets or sets pitch change in semi-tones compared to the original pitch
+            (-12 .. +12).
+            </summary>
+        </member>
+        <member name="P:SoundTouch.Net.NAudioSupport.SoundTouchWaveStream.RateChange">
+            <summary>
+            Gets or sets the rate control value as a difference in percents compared
+            to the original rate (-50 .. +100 %).
+            </summary>
+        </member>
+        <member name="P:SoundTouch.Net.NAudioSupport.SoundTouchWaveStream.Position">
+            <inheritdoc/>
+        </member>
+        <member name="M:SoundTouch.Net.NAudioSupport.SoundTouchWaveStream.Read(System.Byte[],System.Int32,System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SoundTouch.Net.NAudioSupport.SoundTouchWaveStream.Flush">
+            <inheritdoc/>
+        </member>
+        <member name="M:SoundTouch.Net.NAudioSupport.SoundTouchWaveStream.Dispose(System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="T:SoundTouch.Net.NAudioSupport.UnobservedExceptionEventArgs">
+            <summary>
+            Provides data for the event that is raised when a fault happened during
+            the Read operation of the <see cref="T:SoundTouch.Net.NAudioSupport.SoundTouchWaveProvider"/>.
+            </summary>
+        </member>
+        <member name="M:SoundTouch.Net.NAudioSupport.UnobservedExceptionEventArgs.#ctor(System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SoundTouch.Net.NAudioSupport.UnobservedExceptionEventArgs"/> class.
+            </summary>
+            <param name="exception">The Exception that was caught.</param>
+        </member>
+        <member name="P:SoundTouch.Net.NAudioSupport.UnobservedExceptionEventArgs.Exception">
+            <summary>
+            Gets the Exception that was caught.
+            </summary>
+        </member>
+        <member name="P:SoundTouch.Net.NAudioSupport.UnobservedExceptionEventArgs.IsObserved">
+            <summary>
+            Gets a value indicating whether this exception has been marked as "observed.".
+            </summary>
+        </member>
+        <member name="M:SoundTouch.Net.NAudioSupport.UnobservedExceptionEventArgs.SetObserved">
+            <summary>
+            Marks the <see cref="P:SoundTouch.Net.NAudioSupport.UnobservedExceptionEventArgs.Exception"/> as "observed", thus preventing it from triggering
+            an exception in the <see cref="M:NAudio.Wave.IWaveProvider.Read(System.Byte[],System.Int32,System.Int32)"/> method.
+            </summary>
+        </member>
+    </members>
+</doc>
