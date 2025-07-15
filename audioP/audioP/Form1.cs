@@ -22,6 +22,16 @@ namespace audioP
         {
             InitializeComponent();
 
+            trackBar2.Scroll += trackBar2_Scroll;
+            // Устанавливаем минимальное и максимальное значение
+            trackBar2.Minimum = -100;
+            trackBar2.Maximum = 100;
+            trackBar2.Value = 0;  // Начальное значение - 0 (середина)
+
+            // Опционально: настроить шаг изменения
+            trackBar2.SmallChange = 5;
+            trackBar2.LargeChange = 10;
+
             progressTimer = new Timer();
             progressTimer.Interval = 50;
             progressTimer.Tick += ProgressTimer_Tick;
@@ -61,10 +71,10 @@ namespace audioP
                     button2.Enabled = true;
                     trackBar1.Enabled = true;
 
-                    // Определяем BPM
-                    //float bpm = DetectBpm(waveStream);
-                    //label4.Text = $"BPM: {bpm:F1}";
-                    //waveStream = new AudioFileReader(openFileDialog.FileName);
+                    // Запускаем воспроизведение сразу после загрузки
+                    outputDevice.Play();
+                    button2.Text = "Pause";
+                    progressTimer.Start();
 
                     panel1.Invalidate();
                 }
@@ -73,7 +83,6 @@ namespace audioP
                     MessageBox.Show($"Ошибка загрузки файла: {ex.Message}");
                 }
             }
-
         }
 
         private float[] ReadAudioData(WaveStream stream)
@@ -233,9 +242,103 @@ namespace audioP
         {
 
         }
-        /*private float DetectBpm(WaveStream stream)
+        
+        private void trackBar2_Scroll(object sender, EventArgs e)
         {
+            if (waveStream == null || outputDevice == null) return;
 
-        }*/
+            try
+            {
+                var playbackState = outputDevice.PlaybackState;
+                var currentTime = waveStream.CurrentTime;
+                string filePath = ((AudioFileReader)waveStream).FileName;
+
+                outputDevice.Stop();
+                outputDevice.Dispose();
+                waveStream.Dispose();
+
+                float rate = 1.0f + (trackBar2.Value * 0.05f);
+
+                var audioFile = new AudioFileReader(filePath);
+                var speedControl = new SpeedAdjustmentSampleProvider(audioFile.ToSampleProvider())
+                {
+                    Speed = rate
+                };
+
+                outputDevice = new WaveOutEvent();
+                outputDevice.Init(speedControl);
+                waveStream = audioFile;
+                waveStream.CurrentTime = currentTime;
+
+                label4.Text = $"Speed: {rate * 100:F0}%";
+
+                if (playbackState == PlaybackState.Playing)
+                {
+                    outputDevice.Play();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка изменения скорости: {ex.Message}");
+            }
+        }
+        public class SpeedAdjustmentSampleProvider : ISampleProvider
+        {
+            private readonly ISampleProvider source;
+            private float speed = 1.0f;
+            private float[] sourceBuffer;
+            private float position;
+            private int sourceBufferLength;
+
+            public SpeedAdjustmentSampleProvider(ISampleProvider source)
+            {
+                this.source = source;
+                if (source.WaveFormat.BlockAlign == 0)
+                    throw new ArgumentException("Source wave format must have valid block alignment");
+            }
+
+            public float Speed
+            {
+                get => speed;
+                set => speed = Math.Max(0.25f, Math.Min(4.0f, value)); // Диапазон 25%-400%
+            }
+
+            public WaveFormat WaveFormat => source.WaveFormat;
+
+            public int Read(float[] buffer, int offset, int count)
+            {
+                int samplesRead = 0;
+                int outIndex = offset;
+
+                while (samplesRead < count)
+                {
+                    // Если буфер пуст или достигнут его конец
+                    if (sourceBuffer == null || position >= sourceBufferLength)
+                    {
+                        // Вычисляем сколько нужно прочитать с учетом скорости
+                        int samplesRequired = (int)((count - samplesRead) / speed) + source.WaveFormat.BlockAlign;
+                        samplesRequired = samplesRequired - (samplesRequired % source.WaveFormat.BlockAlign);
+
+                        sourceBuffer = new float[samplesRequired];
+                        int read = source.Read(sourceBuffer, 0, samplesRequired);
+                        if (read == 0) break; // Конец потока
+
+                        sourceBufferLength = read;
+                        position = 0;
+                    }
+
+                    // Копируем данные с учетом скорости
+                    while (position < sourceBufferLength && samplesRead < count)
+                    {
+                        buffer[outIndex++] = sourceBuffer[(int)position];
+                        position += speed;
+                        samplesRead++;
+                    }
+                }
+
+                return samplesRead;
+            }
+        }
     }
+    
 }
