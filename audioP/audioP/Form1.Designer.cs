@@ -42,6 +42,8 @@ namespace audioP
             this.label4 = new System.Windows.Forms.Label();
             this.trackBar2 = new System.Windows.Forms.TrackBar();
             this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             this.SuspendLayout();
@@ -102,10 +104,22 @@ namespace audioP
             resources.ApplyResources(this.label5, "label5");
             this.label5.Name = "label5";
             // 
+            // label6
+            // 
+            resources.ApplyResources(this.label6, "label6");
+            this.label6.Name = "label6";
+            // 
+            // panel2
+            // 
+            resources.ApplyResources(this.panel2, "panel2");
+            this.panel2.Name = "panel2";
+            // 
             // Form1
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.trackBar2);
             this.Controls.Add(this.label4);
@@ -137,6 +151,8 @@ namespace audioP
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TrackBar trackBar2;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Panel panel2;
     }
 }
 
